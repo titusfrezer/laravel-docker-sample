@@ -1,4 +1,4 @@
-name: Build & Push to dev ACR
+name: Build & Push to VM
 
 on:
   push:
@@ -22,8 +22,8 @@ jobs:
 
       - run: |
           docker build -f ./Docker/Laravel/Dockerfile -t laravel-docker-sample:latest .
-          docker tag laravel-docker-sample:latest titusfrezer/laravel-docker-sample:latest
-          docker push titusfrezer/laravel-docker-sample:latest
+          docker tag laravel-docker-sample:latest YOUR_DOCKER_USER_NAME/laravel-docker-sample:latest
+          docker push YOUR_DOCKER_USER_NAME/laravel-docker-sample:latest
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1.0.2
@@ -34,7 +34,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             sudo su
-            cd app/Kuraz-online-exam/
+            cd app/laravel-docker-sample/
             sudo docker compose down
             sudo docker compose up --build -d
             sudo docker ps
